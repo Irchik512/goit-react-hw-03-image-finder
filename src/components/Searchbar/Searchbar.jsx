@@ -1,43 +1,49 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import 'style.css';
+import { toast } from 'react-toastify';
 
 class Searchbar extends Component {
-  //   state = {
-  //     name: '',
-  //     number: '',
-  //   };
+  state = {
+    searchQuery: '',
+  };
 
-  //   handleChange = e => {
-  //     const { name, value } = e.currentTarget;
-  //     this.setState({ [name]: value });
-  //   };
+  handleChange = e => {
+    this.setState({ searchQuery: e.currentTarget.value.toLowerCase() });
+  };
 
-  //   handleSubmit = e => {
-  //     e.preventDefault();
-  //     this.props.onSubmit(this.state);
-  //     this.reset();
-  //   };
+  handleSubmit = e => {
+    e.preventDefault();
+    const trimQuery = this.state.searchQuery.trim();
+    if (trimQuery === '') {
+      return toast.error('There is nothing to find. Try again!', {
+        theme: 'colored',
+      });
+    }
+    this.props.onSubmit(trimQuery);
+    this.reset();
+  };
 
-  //   reset = () => {
-  //     this.setState({ name: '', number: '' });
-  //   };
+  reset = () => {
+    this.setState({ searchQuery: '' });
+  };
 
   render() {
-    //     const { name, number } = this.state;
     return (
       <header className="searchbar">
-        <form className="form" onSubmit={this.props.onSubmit()}>
-          <button type="submit" className="button">
-            <span className="button-label">Search</span>
+        <form className="fsearchForm" onSubmit={this.handleSubmit}>
+          <button type="submit" className="searchForm-button">
+            <span className="searchForm-button-label">Search</span>
           </button>
 
           <input
-            className="input"
+            className="searchForm-input"
             type="text"
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
+            value={this.state.searchQuery}
+            onChange={this.handleChange}
           />
         </form>
       </header>

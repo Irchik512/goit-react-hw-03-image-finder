@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
+import 'style.css';
 
-export default function ImageGalleryItem(props) {
+export default function ImageGalleryItem({ alt, src }) {
   return (
-    <li class="gallery-item">
-      <img src="" alt="" />
+    <li className="imageGalleryItem ">
+      <img className="imageGalleryItem-image" src={src} alt={alt} />
     </li>
   );
 }
