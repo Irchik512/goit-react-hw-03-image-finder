@@ -25,12 +25,10 @@ class Modal extends Component {
   };
 
   render() {
+    const { children } = this.props;
     return createPortal(
       <div className="overlay" onClick={this.handleOverlayClick}>
-        <div className="modal">
-          {this.props.children}
-          <img src="" alt="" />
-        </div>
+        <div className="modal">{children}</div>
       </div>,
       modalRoot
     );
@@ -38,8 +36,7 @@ class Modal extends Component {
 }
 
 Modal.propTypes = {
-  src: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default Modal;

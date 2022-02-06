@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import 'style.css';
 import { toast } from 'react-toastify';
-
+import { ReactComponent as SearchIcon } from 'icons/search.svg';
 class Searchbar extends Component {
   state = {
     searchQuery: '',
@@ -31,9 +31,9 @@ class Searchbar extends Component {
   render() {
     return (
       <header className="searchbar">
-        <form className="fsearchForm" onSubmit={this.handleSubmit}>
+        <form className="searchForm" onSubmit={this.handleSubmit}>
           <button type="submit" className="searchForm-button">
-            <span className="searchForm-button-label">Search</span>
+            <SearchIcon></SearchIcon>
           </button>
 
           <input
