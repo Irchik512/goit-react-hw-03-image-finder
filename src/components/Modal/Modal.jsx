@@ -6,12 +6,10 @@ import 'style.css';
 const modalRoot = document.querySelector('#modal-root');
 class Modal extends Component {
   componentDidMount() {
-    console.log('Modal componentDidApdate');
     window.addEventListener('keydown', this.handleKeyDown);
   }
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
-    console.log('Modal componentWillUnmount');
   }
   handleKeyDown = evt => {
     if (evt.code === 'Escape') {

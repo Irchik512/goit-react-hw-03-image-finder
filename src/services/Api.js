@@ -8,7 +8,6 @@ export const fetchNewPhoto = async (searchingQuery, page = 1) => {
     `?key=24522625-682bca817ecb73336eef5fcc0&q=${searchingQuery}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${PER_PAGE}`
   );
   const data = response.data;
-  console.table([data]);
   if (data.hits.length > 0) {
     return {
       hits: data.hits,

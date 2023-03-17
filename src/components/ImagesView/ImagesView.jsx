@@ -31,7 +31,7 @@ export class ImagesView extends Component {
   fetchingPhotos = async () => {
     const { page } = this.state;
     const { searchingQuery } = this.props;
-    // this.setState({ status: 'pending' });
+    this.setState({ status: 'pending' });
     try {
       const { hits, isTheNextPage } = await fetchPhoto(searchingQuery, page);
       this.setState(({ images }) => ({
@@ -40,12 +40,6 @@ export class ImagesView extends Component {
         isNextPage: isTheNextPage,
         page: page + 1,
       }));
-      console.log(this.state);
-
-      // window.scrollTo({
-      //   top: document.documentElement.scrollHeight,
-      //   // behavior: 'smooth',
-      // });
     } catch (error) {
       this.setState({ error, status: 'rejected' });
     }
@@ -69,25 +63,6 @@ export class ImagesView extends Component {
     onClick(largeUrl, e.target.alt);
     togleModal();
   };
-
-  //  Запит черерз Fetch
-  // fetch(
-  //   `https://pixabay.com/api/?key=24522625-682bca817ecb73336eef5fcc0&q=${this.props.searchingQuery}&page=${this.state.page}&image_type=photo&orientation=horizontal&per_page=12`
-  // )
-  //   .then(resp => {
-  //     if (resp.ok) {
-  //       return resp.json();
-  //     }
-  //     return Promise.reject(new Error('fetch not found!'));
-  //   })
-  //   .then(({ hits, totalHits }) =>
-  //     this.setState(({ images, page }) => ({
-  //       images: [...images, ...hits],
-  //       status: 'resolved',
-  //       page: page + 1,
-  //     }))
-  //   )
-  //   .catch(error => this.setState({ error, status: 'rejected' }));
 
   render() {
     const { images, shoowModal, error, status, isNextPage } = this.state;
@@ -126,23 +101,3 @@ ImagesView.propTypes = {
 };
 
 export default ImagesView;
-
-// export class ImageGallery extends Component {
-
-//     onLoadMore = () => {
-//         this.setState({status: 'pending',});
-//         this.setState({page: this.state.page + 1});
-
-//         console.log(this.state.page)
-
-//         const nextName = this.props.pictureName;
-
-//             GalleryApi(nextName, this.state.page + 1)
-//             .then(nextPictures  => {
-
-//                 const pictures = this.state.pictures.concat(nextPictures)
-
-//                 console.log(pictures)
-//                 this.setState({ pictures, status: 'resolved' })})
-//             .catch(error => this.setState({ error, status: 'rejected' }))
-//     };
