@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import 'style.css';
 import { toast } from 'react-toastify';
 import { ReactComponent as SearchIcon } from 'icons/search.svg';
+
 class Searchbar extends Component {
   state = {
     searchQuery: '',
@@ -32,7 +33,11 @@ class Searchbar extends Component {
     return (
       <header className="searchbar">
         <form className="searchForm" onSubmit={this.handleSubmit}>
-          <button type="submit" className="searchForm-button">
+          <button
+            type="submit"
+            className="searchForm-button"
+            aria-label="find image"
+          >
             <SearchIcon></SearchIcon>
           </button>
 

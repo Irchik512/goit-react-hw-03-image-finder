@@ -5,56 +5,58 @@ import Button from 'components/Button/Button';
 import Text from 'components/Text/Text';
 import Loader from 'components/Loader/Loader';
 import fetchPhoto from 'services/Api';
+import Modal from 'components/Modal/Modal';
 
 export class ImagesView extends Component {
   state = {
     images: [],
     page: 1,
-    per_pege: 12,
     error: null,
     isNextPage: false,
     status: 'idle',
+    shoowModal: false,
+    url: null,
+    tag: null,
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    const { page } = this.state;
+  componentDidUpdate(prevProps) {
     const { searchingQuery } = this.props;
 
     if (prevProps.searchingQuery !== searchingQuery) {
-      this.setState({ page: 1, images: [] });
-      this.fetchingPhotos();
-    }
-
-    if (prevState.page !== page) {
+      this.setState({ page: 1, images: [], error: null });
       this.fetchingPhotos();
     }
   }
 
   fetchingPhotos = async () => {
-    const { page, per_pege } = this.state;
+    const { page } = this.state;
     const { searchingQuery } = this.props;
-    this.setState({ status: 'pending' });
+    // this.setState({ status: 'pending' });
     try {
-      const { hits, isTheNextPage } = await fetchPhoto(
-        searchingQuery,
-        page,
-        per_pege
-      );
+      const { hits, isTheNextPage } = await fetchPhoto(searchingQuery, page);
       this.setState(({ images }) => ({
         images: [...images, ...hits],
         status: 'resolved',
         isNextPage: isTheNextPage,
+        page: page + 1,
       }));
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: 'smooth',
-      });
+      console.log(this.state);
+
+      // window.scrollTo({
+      //   top: document.documentElement.scrollHeight,
+      //   // behavior: 'smooth',
+      // });
     } catch (error) {
       this.setState({ error, status: 'rejected' });
     }
   };
+  togleModal = () => {
+    this.setState(({ shoowModal }) => ({ shoowModal: !shoowModal }));
+  };
+  handleClick = (url, tag) => this.setState({ url, tag });
 
   handleButtonClick = () => {
+    this.fetchingPhotos();
     this.setState(({ page }) => ({ page: page + 1 }));
   };
 
@@ -88,7 +90,7 @@ export class ImagesView extends Component {
   //   .catch(error => this.setState({ error, status: 'rejected' }));
 
   render() {
-    const { images, error, status, isNextPage } = this.state;
+    const { images, shoowModal, error, status, isNextPage } = this.state;
 
     if (status === 'idle') {
       return <Text>Enter samething to find.</Text>;
@@ -102,6 +104,11 @@ export class ImagesView extends Component {
     if (status === 'resolved') {
       return (
         <>
+          {shoowModal && (
+            <Modal onClose={this.togleModal}>
+              <img src={this.state.url} alt={this.state.tag} />
+            </Modal>
+          )}
           <ImageGallery images={images} onClick={this.handleImgClick} />
           {isNextPage ? (
             <Button onClick={this.handleButtonClick} />
@@ -116,8 +123,26 @@ export class ImagesView extends Component {
 
 ImagesView.propTypes = {
   searchingQuery: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-  togleModal: PropTypes.func.isRequired,
 };
 
 export default ImagesView;
+
+// export class ImageGallery extends Component {
+
+//     onLoadMore = () => {
+//         this.setState({status: 'pending',});
+//         this.setState({page: this.state.page + 1});
+
+//         console.log(this.state.page)
+
+//         const nextName = this.props.pictureName;
+
+//             GalleryApi(nextName, this.state.page + 1)
+//             .then(nextPictures  => {
+
+//                 const pictures = this.state.pictures.concat(nextPictures)
+
+//                 console.log(pictures)
+//                 this.setState({ pictures, status: 'resolved' })})
+//             .catch(error => this.setState({ error, status: 'rejected' }))
+//     };
