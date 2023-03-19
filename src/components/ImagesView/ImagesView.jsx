@@ -24,6 +24,7 @@ export class ImagesView extends Component {
 
     if (prevProps.searchingQuery !== searchingQuery) {
       this.setState({ page: 1, images: [], error: null });
+      this.setState({ status: 'pending' });
       this.fetchingPhotos();
     }
   }
@@ -31,7 +32,6 @@ export class ImagesView extends Component {
   fetchingPhotos = async () => {
     const { page } = this.state;
     const { searchingQuery } = this.props;
-    this.setState({ status: 'pending' });
     try {
       const { hits, isTheNextPage } = await fetchPhoto(searchingQuery, page);
       this.setState(({ images }) => ({
